@@ -1,36 +1,32 @@
-;; ---------------------------------------------------------------------
-;; GNU Emacs / N Λ N O - Emacs made simple
-;; Copyright (C) 2020 - N Λ N O developers
-;;
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-;;
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;; ---------------------------------------------------------------------
+;;; nano-theme-light.el --- Selenized white palette for nano -*- lexical-binding: t; -*-
+;;;
+;;; Commentary:
+;; This file provides a light colour palette based on the Selenized white
+;; theme.  The function `nano-theme-set-light` assigns the `nano-color-*`
+;; variables to values taken from the selenized white specification【646016900453456†L110-L140】.  Use this in conjunction with
+;; your own theme (e.g., selenized-solarized-white) to ensure that the
+;; semantic faces defined by nano match the overall colour scheme.  You
+;; can call this function via the `-light` switch when starting Emacs.
+
 (require 'nano-base-colors)
+
 (defun nano-theme-set-light ()
-  "Apply light Nano theme base."
-  ;; Colors from Material design at https://material.io/
-  (setq frame-background-mode    'light)
-  (setq nano-color-foreground "#37474F") ;; Blue Grey / L800
-  (setq nano-color-background "#FFFFFF") ;; White
-  (setq nano-color-highlight  "#FAFAFA") ;; Very Light Grey
-  (setq nano-color-critical   "#FF6F00") ;; Amber / L900
-  (setq nano-color-salient    "#673AB7") ;; Deep Purple / L500
-  (setq nano-color-strong     "#000000") ;; Black
-  (setq nano-color-popout     "#FFAB91") ;; Deep Orange / L200
-  (setq nano-color-subtle     "#ECEFF1") ;; Blue Grey / L50
-  (setq nano-color-faded      "#B0BEC5") ;; Blue Grey / L200
-  ;; to allow for toggling of the themes.
-  (setq nano-theme-var "light")
-  )
+  "Apply the selenized white nano colour palette."
+  (setq frame-background-mode 'light)
+  ;; Backgrounds and foregrounds【646016900453456†L116-L124】
+  (setq nano-color-background "#ffffff")  ;; bg_0 (pure white)
+  (setq nano-color-highlight  "#ebebeb")  ;; bg_1
+  (setq nano-color-subtle     "#cdcdcd")  ;; bg_2
+  (setq nano-color-faded      "#878787")  ;; dim_0
+  (setq nano-color-foreground "#474747")  ;; fg_0
+  (setq nano-color-strong     "#474747")  ;; strong = foreground
+  ;; Accent colours【646016900453456†L125-L139】
+  (setq nano-color-salient    "#0064e4")  ;; blue
+  (setq nano-color-popout     "#d6000c")  ;; red
+  (setq nano-color-critical   "#c49700")  ;; yellow
+  ;; Record the current theme
+  (setq nano-theme-var "light"))
 
 (provide 'nano-theme-light)
+
+;;; nano-theme-light.el ends here

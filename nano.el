@@ -1,39 +1,42 @@
-;; ---------------------------------------------------------------------
-;; GNU Emacs / N Λ N O - Emacs made simple
-;; Copyright (C) 2020 - N Λ N O developers
-;;
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-;;
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with this program. If not, see <http://www.gnu.org/licenses/>.
-;; ---------------------------------------------------------------------
+;;; nano.el --- Modified N Λ N O loader without theme/splash -*- lexical-binding: t; -*-
+;;;
+;;; Commentary:
+;; This is a customised entry point for the nano-emacs modules.  Unlike the
+;; upstream `nano.el` it does **not** load nano’s built‑in themes,
+;; splash screen, modeline or keybindings.  Instead, it loads only
+;; essential modules (layout, session, help) and leaves theming to your
+;; own configuration.  You can still use the dark/light colour palettes
+;; provided by nano by invoking Emacs with `-dark` or `-light` on the
+;; command line; these flags call `nano-theme-set-dark` or
+;; `nano-theme-set-light` to update the `nano-color-*` variables without
+;; overriding your theme.  All other modules (nano-defaults,
+;; nano-modeline, nano-bindings, nano-splash) are intentionally not
+;; loaded so that your existing theme, dashboard and keybindings are
+;; preserved.
+
 (package-initialize)
 
-;; Default layout (optional)
+;; Load minimal layout settings for consistent margins/fringes
 (require 'nano-layout)
 
-;; Theming Command line options (this will cancel warning messages)
-(add-to-list 'command-switch-alist '("-dark"   . (lambda (args))))
-(add-to-list 'command-switch-alist '("-light"  . (lambda (args))))
+;; Register command‑line switches recognised by the original nano.el.  These
+;; assignments suppress warnings from `nano-theme` functions but no
+;; longer trigger loading of nano’s own theme or splash screen.  When
+;; passed, `-dark` or `-light` will call our modified theme functions
+;; defined in `nano-theme-dark.el` and `nano-theme-light.el` respectively.
+(add-to-list 'command-switch-alist '("-dark"   . (lambda (args) (nano-theme-set-dark))))
+(add-to-list 'command-switch-alist '("-light"  . (lambda (args) (nano-theme-set-light))))
 (add-to-list 'command-switch-alist '("-default"  . (lambda (args))))
 (add-to-list 'command-switch-alist '("-no-splash" . (lambda (args))))
 (add-to-list 'command-switch-alist '("-no-help" . (lambda (args))))
 (add-to-list 'command-switch-alist '("-compact" . (lambda (args))))
 
-
-;; Customize support for 'emacs -q' (Optional)
-;; You can enable customizations by creating the nano-custom.el file
-;; with e.g. `touch nano-custom.el` in the folder containing this file.
+;; Support per‑installation customisations.  If a file named
+;; `nano-custom.el` exists in the same directory as this file, it will be
+;; loaded under the same conditions as the upstream loader.  This makes
+;; it easy to extend nano without editing this file.
 (let* ((this-file  (or load-file-name (buffer-file-name)))
-       (this-dir  (file-name-directory this-file))
+       (this-dir   (file-name-directory this-file))
        (custom-path  (concat this-dir "nano-custom.el")))
   (when (and (eq nil user-init-file)
              (eq nil custom-file)
@@ -42,49 +45,20 @@
     (setq custom-file custom-path)
     (load custom-file)))
 
-;; Theme
-(require 'nano-faces)
-(require 'nano-theme)
-(require 'nano-theme-dark)
-(require 'nano-theme-light)
+;; Colour palette definitions: we defer loading of `nano-faces` to your
+;; init file so that it picks up the colours from your active theme.
+;; However, if you invoke Emacs with -dark or -light, call the
+;; corresponding functions to update the nano colour variables.  These
+;; functions are defined in the patched theme files below.
 
-(cond
- ((member "-default" command-line-args) t)
- ((member "-dark" command-line-args) (nano-theme-set-dark))
- (t (nano-theme-set-light)))
-(call-interactively 'nano-refresh-theme)
-
-;; Nano default settings (optional)
-(require 'nano-defaults)
-
-;; Nano session saving (optional)
+;; Session management (recentf, savehist, backups) and help modules
+;; enhance usability without affecting the UI.  If you don’t need them,
+;; simply comment out these lines.
 (require 'nano-session)
-
-;; Nano header & mode lines (optional)
-(require 'nano-modeline)
-
-;; Nano key bindings modification (optional)
-(require 'nano-bindings)
-
-;; Compact layout (need to be loaded after nano-modeline)
-(when (member "-compact" command-line-args)
-  (require 'nano-compact))
-
-;; Nano counsel configuration (optional)
-;; Needs "counsel" package to be installed (M-x: package-install)
-;; (require 'nano-counsel)
-
-;; Welcome message (optional)
-(let ((inhibit-message t))
-  (message "Welcome to GNU Emacs / N Λ N O edition")
-  (message (format "Initialization time: %s" (emacs-init-time))))
-
-;; Splash (optional)
-(unless (member "-no-splash" command-line-args)
-  (require 'nano-splash))
-
-;; Help (optional)
 (unless (member "-no-help" command-line-args)
   (require 'nano-help))
 
+;; Provide the feature so `(require 'nano)` succeeds
 (provide 'nano)
+
+;;; nano.el ends here
