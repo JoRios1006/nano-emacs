@@ -302,7 +302,7 @@
                                  :foreground ,nano-light-background
                                  :background ,nano-light-faded
                                  :weight regular
-                                 :box (:line-width 2 :color "#ffffff" :style nil)))
+                                 :box (:line-width 2 :color ,nano-light-subtle :style nil)))
 
       (setq mode-line-format nil)
       (setq header-line-format nil)

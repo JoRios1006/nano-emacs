@@ -294,8 +294,11 @@
 
 (defun nano-modeline-mu4e-view-hook ()
   (setq header-line-format "%-")
+  ;; Set the mu4e view header-line to use the current nano theme's
+  ;; background rather than a hard‑coded white.  Backtick quoting
+  ;; allows interpolation of `nano-color-background` at runtime.
   (face-remap-add-relative 'header-line
-                           '(:background "#ffffff"
+                           `(:background ,nano-color-background
                                          :underline nil
                                          :box nil
                                          :height 1.0)))

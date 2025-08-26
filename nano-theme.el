@@ -408,24 +408,29 @@ function is a convenience wrapper used by `describe-package-1'."
     (set-face-attribute 'term-color-white nil
                          :foreground (face-background 'nano-face-default)
                          :background (face-background 'nano-face-default))
+    ;; The default term ANSI colours are redefined to match the
+    ;; selenized palettes.  Foreground colours use the base accent
+    ;; colours from the selenized dark palette, while backgrounds use
+    ;; the corresponding bright versions for better contrast.  See
+    ;; https://github.com/jan-warchol/selenized for details.
     (set-face-attribute 'term-color-blue nil
-                         :foreground "#42A5F5"   ;; material color blue L400
-                         :background "#BBDEFB")  ;; material color blue L100
+                         :foreground "#4695f7"   ;; selenized dark blue
+                         :background "#58a3ff")  ;; bright blue
     (set-face-attribute 'term-color-cyan nil
-                         :foreground "#26C6DA"   ;; material color cyan L400
-                         :background "#B2EBF2")  ;; material color cyan L100
+                         :foreground "#41c7b9"   ;; selenized dark cyan
+                         :background "#53d6c7")  ;; bright cyan
     (set-face-attribute 'term-color-green nil
-                         :foreground "#66BB6A"   ;; material color green L400
-                         :background "#C8E6C9")  ;; material color green L100
+                         :foreground "#75b938"   ;; selenized dark green
+                         :background "#84c747")  ;; bright green
     (set-face-attribute 'term-color-magenta nil
-                         :foreground "#AB47BC"   ;; material color purple L400
-                         :background "#E1BEE7")  ;; material color purple L100
+                         :foreground "#f275be"   ;; selenized dark magenta
+                         :background "#ff84cd")  ;; bright magenta
     (set-face-attribute 'term-color-red nil
-                         :foreground "#EF5350"   ;; material color red L400
-                         :background "#FFCDD2")  ;; material color red L100
+                         :foreground "#fa5750"   ;; selenized dark red
+                         :background "#ff665c")  ;; bright red
     (set-face-attribute 'term-color-yellow nil
-                         :foreground "#FFEE58"    ;; material color yellow L400
-                         :background "#FFF9C4"))) ;; material color yellow L100
+                         :foreground "#dbb32d"    ;; selenized dark yellow
+                         :background "#ebc13d"))) ;; bright yellow
 
 
 (defun nano-theme--calendar ()

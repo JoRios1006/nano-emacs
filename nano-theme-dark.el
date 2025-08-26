@@ -27,6 +27,16 @@
   (setq nano-color-salient    "#4695f7")  ;; blue
   (setq nano-color-popout     "#fa5750")  ;; red
   (setq nano-color-critical   "#dbb32d")  ;; yellow
+  ;; Provide backwards‑compatible variable names expected by some modules.
+  (setq nano-dark-background nano-color-background)
+  (setq nano-dark-highlight  nano-color-highlight)
+  (setq nano-dark-subtle     nano-color-subtle)
+  (setq nano-dark-faded      nano-color-faded)
+  (setq nano-dark-foreground nano-color-foreground)
+  (setq nano-dark-strong     nano-color-strong)
+  (setq nano-dark-salient    nano-color-salient)
+  (setq nano-dark-popout     nano-color-popout)
+  (setq nano-dark-critical   nano-color-critical)
   ;; Record the current theme name for toggling
   (setq nano-theme-var "dark"))
 
